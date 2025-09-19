@@ -1,0 +1,231 @@
+<!doctype html>
+<html lang="ko">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>파이썬 기초배우기</title>
+  <meta name="description" content="파이썬 기초를 쉽게 배우는 블로그입니다. 설치부터 기본 문법, 자료형, 함수, 모듈까지 단계별로 정리합니다.">
+  <meta name="color-scheme" content="light dark">
+  <meta property="og:title" content="파이썬 기초배우기">
+  <meta property="og:description" content="파이썬 기초를 쉽게 배우는 블로그">
+  <meta property="og:type" content="website">
+  <meta property="og:locale" content="ko_KR">
+  <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 128 128'><text y='1em' font-size='96'>🐍</text></svg>">
+  <style>
+    :root{
+      --bg: #ffffff;
+      --fg: #0f172a;
+      --muted:#64748b;
+      --card:#f8fafc;
+      --primary:#2563eb;
+      --ring: rgba(37,99,235,.35);
+      --code-bg:#0b1020; --code-fg:#e5e7eb; --code-border:#1f2937;
+    }
+    @media (prefers-color-scheme: dark){
+      :root{
+        --bg:#0b1220; --fg:#e5e7eb; --muted:#9aa5b1; --card:#0e1628;
+        --primary:#60a5fa; --ring: rgba(96,165,250,.35);
+        --code-bg:#0a0f1c; --code-fg:#e5e7eb; --code-border:#263042;
+      }
+    }
+    [data-theme="dark"]{
+      --bg:#0b1220; --fg:#e5e7eb; --muted:#9aa5b1; --card:#0e1628;
+      --primary:#60a5fa; --ring: rgba(96,165,250,.35);
+      --code-bg:#0a0f1c; --code-fg:#e5e7eb; --code-border:#263042;
+    }
+    *{box-sizing:border-box}
+    html,body{height:100%}
+    body{
+      margin:0; font:16px/1.6 ui-sans-serif, system-ui, -apple-system, Segoe UI, Roboto, Apple SD Gothic Neo, Noto Sans KR, Helvetica, Arial, "맑은 고딕", sans-serif;
+      background:var(--bg); color:var(--fg);
+    }
+    a{color:var(--primary); text-decoration:none}
+    a:hover{text-decoration:underline}
+    .container{max-width:1100px; margin-inline:auto; padding:24px}
+    .skip{position:absolute; left:-9999px}
+    .skip:focus{left:16px; top:16px; background:#fff; color:#000; padding:8px 12px; border-radius:8px}
+    header{
+      position:sticky; top:0; z-index:50; backdrop-filter: blur(8px);
+      background: color-mix(in oklab, var(--bg) 80%, transparent);
+      border-bottom:1px solid color-mix(in oklab, var(--fg) 12%, transparent);
+    }
+    .nav{display:flex; align-items:center; gap:16px; justify-content:space-between; padding:14px 24px}
+    .brand{display:flex; align-items:center; gap:10px; font-weight:800; letter-spacing:.2px}
+    .brand .logo{width:28px; height:28px; display:grid; place-items:center; background:var(--primary); color:#fff; border-radius:8px}
+    .nav-actions{display:flex; align-items:center; gap:10px}
+    .search{display:flex; align-items:center; gap:8px; background:var(--card); padding:8px 12px; border-radius:10px; border:1px solid color-mix(in oklab, var(--fg) 10%, transparent)}
+    .search input{border:0; outline:none; background:transparent; color:var(--fg); min-width:160px}
+    .btn{border:1px solid color-mix(in oklab, var(--fg) 12%, transparent); background:var(--card); color:var(--fg);
+      padding:8px 12px; border-radius:10px; cursor:pointer}
+    .btn:focus-visible{outline:3px solid var(--ring); outline-offset:2px}
+    .hero{padding:36px 24px 8px}
+    .hero h1{font-size:clamp(28px, 4vw, 44px); line-height:1.15; margin:0 0 8px}
+    .hero p{color:var(--muted); margin:0}
+    .grid{display:grid; gap:16px; grid-template-columns:1fr; margin-top:24px}
+    @media (min-width: 880px){ .grid{grid-template-columns:2fr 1fr} }
+    .cards{display:grid; grid-template-columns:1fr; gap:16px}
+    @media (min-width:720px){ .cards{grid-template-columns:repeat(2,1fr)} }
+    @media (min-width:1024px){ .cards{grid-template-columns:repeat(3,1fr)} }
+    .card{
+      background:var(--card); padding:16px; border-radius:14px;
+      border:1px solid color-mix(in oklab, var(--fg) 12%, transparent);
+      transition:transform .12s ease, box-shadow .12s ease;
+    }
+    .card:hover{transform:translateY(-2px); box-shadow:0 6px 18px color-mix(in oklab, var(--fg) 12%, transparent)}
+    .card h3{margin:.2rem 0 .4rem; font-size:1.05rem}
+    .meta{font-size:.85rem; color:var(--muted)}
+    .sidebar{display:grid; gap:16px; align-content:start}
+    .panel{background:var(--card); padding:16px; border-radius:14px; border:1px solid color-mix(in oklab, var(--fg) 12%, transparent)}
+    .panel h4{margin:0 0 8px}
+    pre, code{font-family: ui-monospace, SFMono-Regular, Menlo, Consolas, "Liberation Mono", monospace}
+    pre{
+      margin:0; padding:14px; background:var(--code-bg); color:var(--code-fg);
+      border:1px solid var(--code-border); border-radius:12px; overflow:auto;
+    }
+    footer{margin-top:36px; border-top:1px solid color-mix(in oklab, var(--fg) 12%, transparent)}
+    .foot{padding:18px 24px; color:var(--muted); display:flex; gap:10px; flex-wrap:wrap; justify-content:space-between}
+    .pill{display:inline-flex; align-items:center; gap:6px; padding:6px 10px; background:var(--card); border-radius:999px; border:1px solid color-mix(in oklab, var(--fg) 12%, transparent); font-size:.85rem}
+    .kbd{font:600 .8rem ui-monospace, SFMono-Regular, Menlo, Consolas, monospace; padding:2px 6px; border:1px solid color-mix(in oklab, var(--fg) 20%, transparent); border-bottom-width:2px; border-radius:6px}
+  </style>
+</head>
+<body>
+  <a class="skip" href="#main">본문으로 건너뛰기</a>
+
+  <header>
+    <nav class="nav container">
+      <div class="brand">
+        <div class="logo">Py</div>
+        <a href="/" aria-label="홈으로">파이썬 기초배우기</a>
+      </div>
+
+      <div class="nav-actions">
+        <label class="search" aria-label="글 검색">
+          🔎
+          <input id="q" type="search" placeholder="예: 리스트, 반복문, 함수…" autocomplete="off" />
+        </label>
+        <button id="theme" class="btn" aria-pressed="false" title="다크모드 전환(Alt+D)">🌗</button>
+      </div>
+    </nav>
+  </header>
+
+  <main id="main" class="container">
+    <section class="hero">
+      <h1>파이썬 기초배우기</h1>
+      <p>설치부터 기본 문법·자료형·제어문·함수·모듈까지 <strong>하루 한 걸음</strong> 배우는 블로그. 예제로 익히고, 짧은 퀴즈로 확인해요.</p>
+      <div style="margin-top:10px; display:flex; gap:8px; flex-wrap:wrap">
+        <span class="pill">🐍 초보 환영</span>
+        <span class="pill">💡 짧고 실용적인 예제</span>
+        <span class="pill">🧪 실행 가능한 코드</span>
+      </div>
+    </section>
+
+    <section class="grid">
+      <!-- 글 카드 영역 -->
+      <div>
+        <div class="cards" id="posts">
+          <!-- 글 카드는 JS에서 렌더링됩니다 -->
+        </div>
+      </div>
+
+      <!-- 사이드바 -->
+      <aside class="sidebar">
+        <div class="panel">
+          <h4>시작하기</h4>
+          <ol style="margin:0; padding-left:18px">
+            <li>파이썬 설치(Windows/macOS)</li>
+            <li>첫 코드 실행: <code>print("Hello, Python!")</code></li>
+            <li>문법 기초: 변수 · 자료형 · 연산자</li>
+          </ol>
+        </div>
+
+        <div class="panel">
+          <h4>예제 미리보기</h4>
+          <pre><code># 리스트 컴프리헨션
+squares = [n*n for n in range(1, 6)]
+print(squares)  # [1, 4, 9, 16, 25]</code></pre>
+        </div>
+
+        <div class="panel">
+          <h4>키보드 팁</h4>
+          <p><span class="kbd">/</span> 로 검색 상자 활성화 · <span class="kbd">Alt</span>+<span class="kbd">D</span> 로 다크모드 전환</p>
+        </div>
+      </aside>
+    </section>
+  </main>
+
+  <footer>
+    <div class="foot container">
+      <small>© <span id="year"></span> 파이썬 기초배우기 · 모든 예제는 교육용</small>
+      <small><a href="#">RSS</a> · <a href="#">문의</a></small>
+    </div>
+  </footer>
+
+  <script>
+    // --- 더미 글 데이터(원하는 대로 수정/추가하세요) ---
+    const POSTS = [
+      { title: "01. 파이썬 설치 & 첫 실행", date: "2025-09-01", tags: ["설치","기초"], desc: "파이썬 설치, 터미널/IDLE에서 첫 실행까지 단계별 안내.", url: "#" },
+      { title: "02. 변수와 자료형", date: "2025-09-02", tags: ["변수","자료형"], desc: "숫자, 문자열, 불리언, 리스트/튜플/딕셔너리의 핵심.", url: "#" },
+      { title: "03. 조건문 if/elif/else", date: "2025-09-03", tags: ["제어문"], desc: "분기 로직을 깔끔하게 작성하는 방법.", url: "#" },
+      { title: "04. 반복문 for/while", date: "2025-09-04", tags: ["제어문"], desc: "반복 패턴과 range, enumerate 사용법.", url: "#" },
+      { title: "05. 함수 기초", date: "2025-09-05", tags: ["함수"], desc: "파라미터, 반환값, 기본값과 가변 인자.", url: "#" },
+      { title: "06. 모듈과 패키지", date: "2025-09-06", tags: ["모듈"], desc: "표준 라이브러리 가져오기와 패키지 구조 이해.", url: "#" },
+      { title: "07. 리스트 컴프리헨션", date: "2025-09-07", tags: ["리스트"], desc: "한 줄로 리스트 만들기, 조건부 컴프리헨션.", url: "#" },
+      { title: "08. 파일 입출력", date: "2025-09-08", tags: ["파일"], desc: "텍스트 파일 읽고 쓰기, with 문 패턴.", url: "#" },
+      { title: "09. 예외 처리", date: "2025-09-09", tags: ["예외"], desc: "try/except/else/finally의 실전 패턴.", url: "#" }
+    ];
+
+    // --- 글 카드 렌더링 ---
+    const $posts = document.getElementById('posts');
+    function renderPosts(q=""){
+      $posts.innerHTML = "";
+      const kw = q.trim().toLowerCase();
+      const filtered = !kw ? POSTS : POSTS.filter(p =>
+        p.title.toLowerCase().includes(kw) ||
+        p.desc.toLowerCase().includes(kw) ||
+        (p.tags||[]).some(t => t.toLowerCase().includes(kw))
+      );
+      if(!filtered.length){
+        $posts.innerHTML = `<div class="panel">검색 결과가 없습니다.</div>`;
+        return;
+      }
+      for(const p of filtered){
+        const tags = (p.tags||[]).map(t=>`<span class="pill">#${t}</span>`).join(" ");
+        $posts.insertAdjacentHTML("beforeend", `
+          <article class="card">
+            <a href="${p.url}" style="display:block">
+              <div class="meta">${new Date(p.date).toLocaleDateString('ko-KR')} · ${tags}</div>
+              <h3>${p.title}</h3>
+              <p style="margin:0;color:var(--muted)">${p.desc}</p>
+            </a>
+          </article>
+        `);
+      }
+    }
+    renderPosts();
+
+    // --- 검색 이벤트 ---
+    const $q = document.getElementById('q');
+    window.addEventListener('keydown', (e)=>{ if(e.key==='/' && document.activeElement!==$q){ e.preventDefault(); $q.focus(); } });
+    $q.addEventListener('input', (e)=> renderPosts(e.target.value));
+
+    // --- 다크모드 토글 ---
+    const btn = document.getElementById('theme');
+    const THEME_KEY = "pyblog-theme";
+    const setTheme = (mode) => {
+      if(mode==='dark'){ document.documentElement.setAttribute('data-theme','dark'); btn.setAttribute('aria-pressed','true'); }
+      else{ document.documentElement.removeAttribute('data-theme'); btn.setAttribute('aria-pressed','false'); }
+      localStorage.setItem(THEME_KEY, mode);
+    };
+    const saved = localStorage.getItem(THEME_KEY);
+    if(saved) setTheme(saved);
+    btn.addEventListener('click', ()=>{
+      const dark = document.documentElement.getAttribute('data-theme')==='dark';
+      setTheme(dark ? 'light' : 'dark');
+    });
+    window.addEventListener('keydown', (e)=>{ if(e.altKey && e.key.toLowerCase()==='d'){ e.preventDefault(); btn.click(); } });
+
+    // --- 연도 표기 ---
+    document.getElementById('year').textContent = new Date().getFullYear();
+  </script>
+</body>
+</html>
