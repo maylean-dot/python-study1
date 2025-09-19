@@ -1,0 +1,268 @@
+<!doctype html>
+<html lang="ko">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>파이썬 변수와 자료형</title>
+<meta name="color-scheme" content="light dark">
+<style>
+  :root{
+    --bg:#ffffff; --fg:#0f172a; --muted:#64748b; --card:#f8fafc; --border:#e2e8f0; --primary:#2563eb;
+    --code-bg:#0b1020; --code-fg:#e5e7eb; --code-border:#1f2937;
+  }
+  @media (prefers-color-scheme: dark){
+    :root{
+      --bg:#0b1220; --fg:#e5e7eb; --muted:#9aa5b1; --card:#0e1628; --border:#213147; --primary:#60a5fa;
+      --code-bg:#0a0f1c; --code-fg:#e5e7eb; --code-border:#263042;
+    }
+  }
+  [data-theme="dark"]{
+    --bg:#0b1220; --fg:#e5e7eb; --muted:#9aa5b1; --card:#0e1628; --border:#213147; --primary:#60a5fa;
+    --code-bg:#0a0f1c; --code-fg:#e5e7eb; --code-border:#263042;
+  }
+  *{box-sizing:border-box}
+  body{margin:0; background:var(--bg); color:var(--fg);
+       font:16px/1.7 ui-sans-serif, system-ui, -apple-system, Segoe UI, Roboto, "Noto Sans KR", "Apple SD Gothic Neo", "맑은 고딕", Arial, sans-serif;}
+  a{color:var(--primary); text-decoration:none}
+  a:hover{text-decoration:underline}
+  header{position:sticky; top:0; background:color-mix(in oklab, var(--bg) 80%, transparent);
+         backdrop-filter: blur(8px); border-bottom:1px solid var(--border); z-index:10}
+  .container{max-width:1100px; margin-inline:auto; padding:20px}
+  .nav{display:flex; align-items:center; justify-content:space-between; gap:12px}
+  .brand{display:flex; align-items:center; gap:10px; font-weight:800}
+  .brand .logo{width:28px; height:28px; display:grid; place-items:center; background:var(--primary); color:#fff; border-radius:8px}
+  .btn{border:1px solid var(--border); background:var(--card); color:var(--fg); padding:8px 12px; border-radius:10px; cursor:pointer}
+  .grid{display:grid; gap:20px; grid-template-columns:1fr; margin-top:16px}
+  @media (min-width: 960px){ .grid{grid-template-columns: 1fr 280px} }
+  .panel{background:var(--card); border:1px solid var(--border); border-radius:14px; padding:16px}
+  .toc ul{list-style:none; padding-left:0; margin:0}
+  .toc li{margin:6px 0}
+  h1{font-size:clamp(26px, 4vw, 40px); margin:10px 0}
+  h2{margin:26px 0 10px}
+  h3{margin:20px 0 8px}
+  pre, code{font-family: ui-monospace, SFMono-Regular, Menlo, Consolas, "Liberation Mono", monospace}
+  pre{margin:10px 0; padding:14px; background:var(--code-bg); color:var(--code-fg); border:1px solid var(--code-border); border-radius:12px; overflow:auto}
+  .note{border-left:4px solid var(--primary); padding:10px 12px; background:color-mix(in oklab, var(--primary) 6%, var(--card)); border-radius:8px}
+  .callout{display:flex; gap:10px; align-items:flex-start; background:var(--card); border:1px solid var(--border); border-radius:12px; padding:12px}
+  .quiz{background:var(--card); border:1px solid var(--border); border-radius:12px; padding:12px}
+  .kbd{font:600 .85rem ui-monospace, SFMono-Regular, Menlo, Consolas, monospace; padding:2px 6px; border:1px solid var(--border); border-bottom-width:2px; border-radius:6px}
+  footer{margin-top:30px; border-top:1px solid var(--border)}
+  .foot{padding:16px; color:var(--muted); display:flex; justify-content:space-between; flex-wrap:wrap; gap:8px}
+</style>
+</head>
+<body>
+<header>
+  <div class="container nav">
+    <div class="brand">
+      <div class="logo">Py</div>
+      <div>파이썬 변수와 자료형</div>
+    </div>
+    <button id="theme" class="btn" aria-pressed="false" title="다크모드 전환(Alt+D)">🌗</button>
+  </div>
+</header>
+
+<main class="container grid">
+  <article>
+    <h1>파이썬 변수와 자료형</h1>
+    <p class="note">이 문서는 파이썬의 <b>변수(assignment)</b>와 핵심 <b>자료형</b>을 실전 예제와 함께 빠르게 익히도록 구성했습니다. 각 예제는 복사해 바로 실행할 수 있습니다.</p>
+
+    <h2 id="var">1. 변수(assignment)의 개념</h2>
+    <p>파이썬에서 변수는 “이름 → 객체”의 <em>참조(reference)</em>입니다. 선언 문법이 따로 없고, 대입과 동시에 생성됩니다.</p>
+    <pre><code class="language-py">x = 10          # 정수 객체를 x가 가리킴
+y = x            # y도 같은 정수 객체를 참조
+x = x + 5        # 새로운 정수(15)를 만들어 x가 그것을 참조
+print(x, y)      # 15 10</code></pre>
+
+    <h3>1.1 변수 이름 규칙</h3>
+    <ul>
+      <li>영문/숫자/밑줄 사용, 숫자로 시작 불가 (예: <code>total_sum</code>, <code>_cache</code>)</li>
+      <li>대소문자 구분 (<code>Value</code> ≠ <code>value</code>)</li>
+      <li>예약어 금지 (<code>class</code>, <code>for</code>, <code>def</code> 등)</li>
+    </ul>
+
+    <h3>1.2 다중 대입 & 언패킹</h3>
+    <pre><code>a, b = 1, 2
+a, b = b, a            # 스왑
+x, y, *rest = [10, 20, 30, 40]
+print(a, b, x, y, rest)  # 2 1 10 20 [30, 40]</code></pre>
+
+    <h2 id="types">2. 내장 자료형 개요</h2>
+    <div class="callout">
+      <div>💡</div>
+      <div><b>불변(immutable)</b>: int, float, bool, str, tuple, frozenset …<br>
+          <b>가변(mutable)</b>: list, dict, set, bytearray …</div>
+    </div>
+
+    <h3>2.1 숫자형: int, float</h3>
+    <pre><code>n = 42             # int, 임의정밀도
+pi = 3.14159       # float(배정밀도)
+print(type(n), type(pi))
+print(7 // 3, 7 % 3, 2 ** 10)  # 정수 나눗셈, 나머지, 거듭제곱</code></pre>
+
+    <h3>2.2 bool</h3>
+    <pre><code>flag = True
+print(bool(0), bool(""), bool([]))   # False False False
+print(bool(123), bool("hi"), bool([0]))  # True True True</code></pre>
+
+    <h3>2.3 str (문자열)</h3>
+    <pre><code>s = "Python"
+print(s.lower(), s.upper(), s[0], s[-1])
+print("Py" in s, s.replace("Py", "My"))
+name, score = "민수", 98
+print(f"{name}님의 점수는 {score}점")  # f-string</code></pre>
+
+    <h3>2.4 list (가변 시퀀스)</h3>
+    <pre><code>nums = [1, 2, 3]
+nums.append(4)
+nums.extend([5, 6])
+nums[0] = 99
+print(nums, nums[:3], nums[-2:])  # [99,2,3,4,5,6] [99,2,3] [5,6]</code></pre>
+
+    <h3>2.5 tuple (불변 시퀀스)</h3>
+    <pre><code>pt = (10, 20)
+# pt[0] = 30  # TypeError (불변)
+x, y = pt     # 언패킹
+print(x, y)</code></pre>
+
+    <h3>2.6 dict (키-값 매핑)</h3>
+    <pre><code>user = {"name": "민수", "age": 20}
+user["job"] = "student"
+print(user.get("age"), user.keys(), user.values())</code></pre>
+
+    <h3>2.7 set (중복 없는 집합)</h3>
+    <pre><code>tags = {"python", "web", "python"}
+print(tags)                      # {'python', 'web'}
+print({"a","b"} | {"b","c"})     # 합집합
+print({"a","b"} & {"b","c"})     # 교집합</code></pre>
+
+    <h3>2.8 None</h3>
+    <pre><code>def find_user(id): 
+    return None  # 없음을 명시
+print(find_user(1) is None)  # True (동일성 비교는 is)</code></pre>
+
+    <h2 id="int-vs">3. 동등성(==) vs 동일성(is)</h2>
+    <pre><code>a = [1,2,3]
+b = [1,2,3]
+print(a == b)  # 값이 같다  -> True
+print(a is b)  # 같은 객체? -> False</code></pre>
+
+    <h2 id="type-cast">4. 타입 확인과 변환</h2>
+    <pre><code>print(type(3), isinstance(3, int))  # &lt;class 'int'&gt; True
+print(int("10"), float("3.14"), str(42))</code></pre>
+
+    <h2 id="mutability">5. 가변/불변과 참조</h2>
+    <pre><code>items = [1, 2]
+alias = items        # 같은 리스트 참조
+alias.append(3)
+print(items)         # [1, 2, 3]
+
+# 안전한 복사
+copy1 = items[:]     # 슬라이스 복사
+copy2 = list(items)  # 생성자 복사</code></pre>
+
+    <h2 id="pitfall">6. 흔한 함정: 가변 기본값</h2>
+    <pre><code>def append_item(x, bucket=[]):   # ❌ 안티패턴
+    bucket.append(x)
+    return bucket
+
+print(append_item(1))  # [1]
+print(append_item(2))  # [1, 2]  ← 이전 호출의 리스트 재사용!</code></pre>
+    <div class="callout">
+      <div>✅</div>
+      <div><b>권장 패턴</b>
+        <pre><code>def append_item(x, bucket=None):
+    if bucket is None:
+        bucket = []
+    bucket.append(x)
+    return bucket</code></pre>
+      </div>
+    </div>
+
+    <h2 id="truthy">7. Truthy/Falsy와 조건식</h2>
+    <pre><code>def greet(name):
+    if not name:            # "", None, [], 0 등은 False로 간주
+        return "이름을 입력하세요"
+    return f"안녕하세요, {name}님!"
+
+print(greet(""))    # 이름을 입력하세요</code></pre>
+
+    <h2 id="quiz">8. 미니 퀴즈</h2>
+    <div class="quiz">
+      <ol>
+        <li><code>a = [1,2]; b = a; b.append(3)</code> 후 <code>a</code>는 무엇일까요?</li>
+        <li><code>x = (1, 2, [3]); x[2].append(4); x</code>의 결과는?</li>
+        <li><code>None</code> 비교에 적절한 연산자는 <code>==</code>일까요 <code>is</code>일까요?</li>
+        <li>문자열 <code>"123"</code>을 숫자 123으로 바꾸는 방법은?</li>
+      </ol>
+      <details><summary>정답 보기</summary>
+        <ol>
+          <li><code>[1, 2, 3]</code> (같은 리스트 참조)</li>
+          <li><code>(1, 2, [3, 4])</code> (튜플은 불변이지만 내부 리스트는 가변)</li>
+          <li><code>is</code> (<code>None</code>은 단일톤 객체이므로 동일성 비교)</li>
+          <li><code>int("123")</code></li>
+        </ol>
+      </details>
+    </div>
+
+    <h2 id="cheats">9. 치트시트</h2>
+    <ul>
+      <li><b>불변</b>: int, float, bool, str, tuple, frozenset</li>
+      <li><b>가변</b>: list, dict, set</li>
+      <li><code>==</code> 값 비교, <code>is</code> 객체 동일성 비교</li>
+      <li><code>type(x)</code> / <code>isinstance(x, T)</code> / 캐스팅 <code>int/float/str/list</code> …</li>
+      <li>가변 기본값 금지 → <code>None</code> 사용 패턴</li>
+    </ul>
+  </article>
+
+  <aside class="panel toc">
+    <h3>목차</h3>
+    <ul>
+      <li><a href="#var">1. 변수</a></li>
+      <li><a href="#types">2. 자료형 개요</a></li>
+      <li><a href="#int-vs">3. == vs is</a></li>
+      <li><a href="#type-cast">4. 타입 확인/변환</a></li>
+      <li><a href="#mutability">5. 가변/불변</a></li>
+      <li><a href="#pitfall">6. 가변 기본값 함정</a></li>
+      <li><a href="#truthy">7. Truthy/Falsy</a></li>
+      <li><a href="#quiz">8. 미니 퀴즈</a></li>
+      <li><a href="#cheats">9. 치트시트</a></li>
+    </ul>
+  </aside>
+</main>
+
+<footer>
+  <div class="foot container">
+    <small>© <span id="year"></span> 파이썬 기초배우기 · 변수와 자료형</small>
+    <small><button class="btn" id="copyAll">이 페이지 소스 복사</button></small>
+  </div>
+</footer>
+
+<script>
+  // 다크모드
+  const btn = document.getElementById('theme');
+  const KEY = "page-theme";
+  function setTheme(mode){
+    if(mode==='dark'){ document.documentElement.setAttribute('data-theme','dark'); btn.setAttribute('aria-pressed','true'); }
+    else{ document.documentElement.removeAttribute('data-theme'); btn.setAttribute('aria-pressed','false'); }
+    localStorage.setItem(KEY, mode);
+  }
+  const saved = localStorage.getItem(KEY);
+  if(saved) setTheme(saved);
+  btn.addEventListener('click', ()=>{
+    const dark = document.documentElement.getAttribute('data-theme')==='dark';
+    setTheme(dark ? 'light' : 'dark');
+  });
+  window.addEventListener('keydown', (e)=>{ if(e.altKey && e.key.toLowerCase()==='d'){ e.preventDefault(); btn.click(); } });
+
+  // 연도
+  document.getElementById('year').textContent = new Date().getFullYear();
+
+  // 페이지 소스 복사
+  document.getElementById('copyAll').addEventListener('click', async ()=>{
+    const html = document.documentElement.outerHTML;
+    await navigator.clipboard.writeText(html);
+    alert('HTML 소스를 클립보드에 복사했어요.');
+  });
+</script>
+</body>
+</html>
